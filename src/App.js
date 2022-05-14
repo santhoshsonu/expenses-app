@@ -1,23 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
+import Expenses from './Components/Expenses/Expenses';
+import NewExpense from './Components/NewExpense/NewExpense';
+
+
+const App = () => {
+  const basePrice = 120;
+  const priceFactor = 10;
+
+  const expenses = [
+    {
+      id: 'e1',
+      title: 'New TV',
+      amount: (basePrice * Math.random() * priceFactor).toFixed(2),
+      date: new Date(2020, 7, 14)
+    },
+    {
+      id: 'e2',
+      title: 'Toilet Paper',
+      amount: (basePrice * Math.random() * priceFactor).toFixed(2),
+      date: new Date(2021, 2, 12)
+    },
+    {
+      id: 'e3',
+      title: 'Car Insurance',
+      amount: (basePrice * Math.random() * priceFactor).toFixed(2),
+      date: new Date(2021, 2, 28)
+    },
+    {
+      id: 'e4',
+      title: 'New Desk (Wooden)',
+      amount: (basePrice * Math.random() * priceFactor).toFixed(2),
+      date: new Date(2021, 5, 12)
+    }
+  ];
+
+  const addExpenseHandler = (newExpense) => {
+    newExpense['id'] = 'e' + (expenses.length + 1);
+    expenses.push(newExpense);
+    console.log(expenses);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <NewExpense onAddExpense={addExpenseHandler} />
+      <Expenses items={expenses} />
     </div>
   );
 }
