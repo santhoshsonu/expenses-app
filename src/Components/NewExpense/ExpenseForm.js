@@ -3,30 +3,16 @@ import { useState } from 'react';
 
 import './ExpenseForm.css';
 
+const initialState = {
+    title: '',
+    amount: '',
+    date: ''
+};
 
 const ExpenseForm = (props) => {
-    const initialState = {
-        title: '',
-        amount: '',
-        date: ''
-    };
     const [userInput, setUserInput] = useState(initialState);
 
-    // const inputChangeHandler = (event) => {
-    //     setUserInput({
-    //         [event.target.name]: event.target.value
-    //     });
-    //     console.log(userInput);
-    // };
-
     const titleChangeHandler = (event) => {
-        // setUserInput({
-        //     ...userInput,
-        //     title: event.target.value
-        // });
-
-        // Use this approach whenever state updates depends 
-        // on previous state
         setUserInput((prevState) => ({
             ...prevState,
             title: event.target.value
@@ -53,11 +39,16 @@ const ExpenseForm = (props) => {
         event.preventDefault();
         const newExpense = { ...userInput };
         props.onSaveExpenseData(newExpense);
+        resetHandler();
+    };
+
+    const resetHandler = () => {
         setUserInput(initialState);
+        props.onReset();
     };
 
     return (
-        <form onSubmit={submitHandler}>
+        <form onSubmit={submitHandler} onReset={resetHandler} hidden={!props.visible}>
             <div className='new-expense__controls'>
                 <div className='new-expense__control'>
                     <label>Title</label>
@@ -73,6 +64,7 @@ const ExpenseForm = (props) => {
                 </div>
             </div>
             <div className='new-expense__actions'>
+                <button type='reset'>Cancel</button>
                 <button type='submit'>Add Expense</button>
             </div>
         </form>
